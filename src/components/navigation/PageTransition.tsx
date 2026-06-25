@@ -99,6 +99,14 @@ export function PageTransition({ children }: PageTransitionProps) {
     }
   };
 
+  const handleTouchCancel = () => {
+    isSwipeGesture.current = false;
+    setIsSwiping(false);
+    setSwipeOffset(0);
+    setIsGestureBack(false);
+    document.body.style.overflow = '';
+  };
+
   // Reset swipe offset when transition completes
   const handleAnimationComplete = () => {
     setIsTransitioning(false);
@@ -115,6 +123,7 @@ export function PageTransition({ children }: PageTransitionProps) {
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
+      onTouchCancel={handleTouchCancel}
     >
       {locationStack.map((loc, index) => {
         const isCurrent = index === currentLocationIndex;
@@ -173,7 +182,7 @@ export function PageTransition({ children }: PageTransitionProps) {
                 ? { opacity: 0 }
                 : direction === 'forward' && isCurrent
                 ? { x: '100%', scale: 1, opacity: 1 }
-                : direction === 'backward' && isUnderneath
+                : direction === 'backward' && isCurrent
                 ? { x: '-15%', scale: 0.96, opacity: 0.9 }
                 : {}
             }
