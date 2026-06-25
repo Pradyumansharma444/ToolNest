@@ -1,0 +1,184 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
+    --radius: 0.625rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Grid pattern for hero */
+.bg-grid-pattern {
+  background-image: linear-gradient(to right, rgb(0 0 0 / 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(0 0 0 / 0.05) 1px, transparent 1px);
+}
+
+.dark .bg-grid-pattern {
+  background-image: linear-gradient(to right, rgb(255 255 255 / 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.03) 1px, transparent 1px);
+}
+
+/* Safe area for mobile nav */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .safe-area-inset-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.3);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.5);
+}
+
+/* Selection */
+::selection {
+  background: hsl(var(--primary) / 0.2);
+  color: hsl(var(--primary));
+}
+
+/* Focus Mode overrides */
+.toolnest-focus-mode nav.sticky,
+.toolnest-focus-mode nav.fixed,
+.toolnest-focus-mode footer {
+  display: none !important;
+}
+.toolnest-focus-mode main {
+  padding-bottom: 0 !important;
+}
+
+/* Custom Accent Themes */
+:root[data-theme-accent="blue"] {
+  --primary: 221.2 83.2% 53.3%;
+  --ring: 221.2 83.2% 53.3%;
+}
+.dark[data-theme-accent="blue"] {
+  --primary: 217.2 91.2% 59.8%;
+  --ring: 217.2 91.2% 59.8%;
+}
+
+:root[data-theme-accent="emerald"] {
+  --primary: 142.1 76.2% 36.3%;
+  --ring: 142.1 76.2% 36.3%;
+}
+.dark[data-theme-accent="emerald"] {
+  --primary: 142.1 70.6% 45.3%;
+  --ring: 142.1 70.6% 45.3%;
+}
+
+:root[data-theme-accent="amber"] {
+  --primary: 37.7 92.1% 50.2%;
+  --ring: 37.7 92.1% 50.2%;
+}
+.dark[data-theme-accent="amber"] {
+  --primary: 37.9 92.4% 60.2%;
+  --ring: 37.9 92.4% 60.2%;
+}
+
+:root[data-theme-accent="rose"] {
+  --primary: 346.8 77.2% 49.8%;
+  --ring: 346.8 77.2% 49.8%;
+}
+.dark[data-theme-accent="rose"] {
+  --primary: 351.3 94.5% 71.4%;
+  --ring: 351.3 94.5% 71.4%;
+}
+
+:root[data-theme-accent="violet"] {
+  --primary: 262.1 83.3% 57.8%;
+  --ring: 262.1 83.3% 57.8%;
+}
+.dark[data-theme-accent="violet"] {
+  --primary: 263.4 90% 74.6%;
+  --ring: 263.4 90% 74.6%;
+}
+
+/* Micro-animations and feedback button scaling */
+.rating-button-pop {
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.rating-button-pop:hover {
+  transform: scale(1.15);
+}
+.rating-button-pop:active {
+  transform: scale(0.9);
+}
+
