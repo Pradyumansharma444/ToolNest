@@ -1,10 +1,9 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Outlet } from 'react-router-dom';
 import { lazy, Suspense, useEffect } from 'react';
 import { Toaster } from '@/components/ui/sonner';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { MobileNav } from '@/components/layout/MobileNav';
-import { TransitionProvider } from './components/navigation/TransitionContext';
 import { PageTransition } from './components/navigation/PageTransition';
 import { setupGlobalPreloader } from './components/navigation/PreloadRegistry';
 
@@ -413,11 +412,11 @@ function LazyLoad({ children }: { children: React.ReactNode }) {
   );
 }
 
-function AppLayout({ children }: { children: React.ReactNode }) {
+function AppLayout({ children }: { children?: React.ReactNode }) {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-1 pb-20 md:pb-0">{children}</main>
+      <main className="flex-1 pb-20 md:pb-0">{children || <Outlet />}</main>
       <Footer />
       <MobileNav />
     </div>
@@ -431,423 +430,425 @@ export default function App() {
   }, []);
 
   return (
-    <TransitionProvider>
+    <>
       <PageTransition>
         <Routes>
-        <Route path="/" element={<AppLayout><Home /></AppLayout>} />
-        <Route path="/:category" element={<AppLayout><CategoryPage /></AppLayout>} />
-        <Route path="/search" element={<AppLayout><SearchPage /></AppLayout>} />
-        <Route path="/tools" element={<AppLayout><AllToolsPage /></AppLayout>} />
-        <Route path="/favorites" element={<AppLayout><FavoritesPage /></AppLayout>} />
-        <Route path="/privacy" element={<AppLayout><PrivacyPage /></AppLayout>} />
-        <Route path="/terms" element={<AppLayout><TermsPage /></AppLayout>} />
+      <Route element={<AppLayout />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/:category" element={<CategoryPage />} />
+        <Route path="/search" element={<SearchPage />} />
+        <Route path="/tools" element={<AllToolsPage />} />
+        <Route path="/favorites" element={<FavoritesPage />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
+        <Route path="/terms" element={<TermsPage />} />
 
         {/* PDF Tools */}
-        <Route path="/tools/merge-pdf" element={<AppLayout><MergePdf /></AppLayout>} />
-        <Route path="/tools/split-pdf" element={<AppLayout><SplitPdf /></AppLayout>} />
-        <Route path="/tools/compress-pdf" element={<AppLayout><CompressPdf /></AppLayout>} />
-        <Route path="/tools/pdf-to-word" element={<AppLayout><PdfToWord /></AppLayout>} />
-        <Route path="/tools/ocr-pdf" element={<AppLayout><OcrPdf /></AppLayout>} />
-        <Route path="/tools/esign-pdf" element={<AppLayout><EsignPdf /></AppLayout>} />
-        <Route path="/tools/unlock-pdf" element={<AppLayout><UnlockPdf /></AppLayout>} />
-        <Route path="/tools/rotate-pdf" element={<AppLayout><RotatePdf /></AppLayout>} />
-        <Route path="/tools/watermark-pdf" element={<AppLayout><WatermarkPdf /></AppLayout>} />
-        <Route path="/tools/pdf-to-jpg" element={<AppLayout><LazyLoad><PdfToJpg /></LazyLoad></AppLayout>} />
-        <Route path="/tools/word-to-pdf" element={<AppLayout><LazyLoad><WordToPdf /></LazyLoad></AppLayout>} />
-        <Route path="/tools/powerpoint-to-pdf" element={<AppLayout><LazyLoad><PowerpointToPdf /></LazyLoad></AppLayout>} />
-        <Route path="/tools/pdf-to-powerpoint" element={<AppLayout><LazyLoad><PdfToPowerpoint /></LazyLoad></AppLayout>} />
-        <Route path="/tools/jpg-to-pdf" element={<AppLayout><LazyLoad><JpgToPdf /></LazyLoad></AppLayout>} />
-        <Route path="/tools/html-to-pdf" element={<AppLayout><LazyLoad><HtmlToPdf /></LazyLoad></AppLayout>} />
-        <Route path="/tools/edit-pdf" element={<AppLayout><LazyLoad><EditPdf /></LazyLoad></AppLayout>} />
-        <Route path="/tools/protect-pdf" element={<AppLayout><LazyLoad><ProtectPdf /></LazyLoad></AppLayout>} />
-        <Route path="/tools/organize-pdf" element={<AppLayout><LazyLoad><OrganizePdf /></LazyLoad></AppLayout>} />
-        <Route path="/tools/page-numbers" element={<AppLayout><LazyLoad><PageNumbers /></LazyLoad></AppLayout>} />
-        <Route path="/tools/crop-pdf" element={<AppLayout><LazyLoad><CropPdf /></LazyLoad></AppLayout>} />
-        <Route path="/tools/compare-pdf" element={<AppLayout><LazyLoad><ComparePdf /></LazyLoad></AppLayout>} />
-        <Route path="/tools/redact-pdf" element={<AppLayout><LazyLoad><RedactPdf /></LazyLoad></AppLayout>} />
-        <Route path="/tools/repair-pdf" element={<AppLayout><LazyLoad><RepairPdf /></LazyLoad></AppLayout>} />
-        <Route path="/tools/pdf-to-pdfa" element={<AppLayout><LazyLoad><PdfToPdfA /></LazyLoad></AppLayout>} />
-        <Route path="/tools/pdf-forms" element={<AppLayout><LazyLoad><PdfForms /></LazyLoad></AppLayout>} />
-        <Route path="/tools/ai-summarizer" element={<AppLayout><LazyLoad><AiSummarizer /></LazyLoad></AppLayout>} />
-        <Route path="/tools/translate-pdf" element={<AppLayout><LazyLoad><TranslatePdf /></LazyLoad></AppLayout>} />
-        <Route path="/tools/scan-to-pdf" element={<AppLayout><LazyLoad><ScanToPdf /></LazyLoad></AppLayout>} />
+        <Route path="/tools/merge-pdf" element={<MergePdf />} />
+        <Route path="/tools/split-pdf" element={<SplitPdf />} />
+        <Route path="/tools/compress-pdf" element={<CompressPdf />} />
+        <Route path="/tools/pdf-to-word" element={<PdfToWord />} />
+        <Route path="/tools/ocr-pdf" element={<OcrPdf />} />
+        <Route path="/tools/esign-pdf" element={<EsignPdf />} />
+        <Route path="/tools/unlock-pdf" element={<UnlockPdf />} />
+        <Route path="/tools/rotate-pdf" element={<RotatePdf />} />
+        <Route path="/tools/watermark-pdf" element={<WatermarkPdf />} />
+        <Route path="/tools/pdf-to-jpg" element={<LazyLoad><PdfToJpg /></LazyLoad>} />
+        <Route path="/tools/word-to-pdf" element={<LazyLoad><WordToPdf /></LazyLoad>} />
+        <Route path="/tools/powerpoint-to-pdf" element={<LazyLoad><PowerpointToPdf /></LazyLoad>} />
+        <Route path="/tools/pdf-to-powerpoint" element={<LazyLoad><PdfToPowerpoint /></LazyLoad>} />
+        <Route path="/tools/jpg-to-pdf" element={<LazyLoad><JpgToPdf /></LazyLoad>} />
+        <Route path="/tools/html-to-pdf" element={<LazyLoad><HtmlToPdf /></LazyLoad>} />
+        <Route path="/tools/edit-pdf" element={<LazyLoad><EditPdf /></LazyLoad>} />
+        <Route path="/tools/protect-pdf" element={<LazyLoad><ProtectPdf /></LazyLoad>} />
+        <Route path="/tools/organize-pdf" element={<LazyLoad><OrganizePdf /></LazyLoad>} />
+        <Route path="/tools/page-numbers" element={<LazyLoad><PageNumbers /></LazyLoad>} />
+        <Route path="/tools/crop-pdf" element={<LazyLoad><CropPdf /></LazyLoad>} />
+        <Route path="/tools/compare-pdf" element={<LazyLoad><ComparePdf /></LazyLoad>} />
+        <Route path="/tools/redact-pdf" element={<LazyLoad><RedactPdf /></LazyLoad>} />
+        <Route path="/tools/repair-pdf" element={<LazyLoad><RepairPdf /></LazyLoad>} />
+        <Route path="/tools/pdf-to-pdfa" element={<LazyLoad><PdfToPdfA /></LazyLoad>} />
+        <Route path="/tools/pdf-forms" element={<LazyLoad><PdfForms /></LazyLoad>} />
+        <Route path="/tools/ai-summarizer" element={<LazyLoad><AiSummarizer /></LazyLoad>} />
+        <Route path="/tools/translate-pdf" element={<LazyLoad><TranslatePdf /></LazyLoad>} />
+        <Route path="/tools/scan-to-pdf" element={<LazyLoad><ScanToPdf /></LazyLoad>} />
 
         {/* Image Tools */}
-        <Route path="/tools/compress-image" element={<AppLayout><CompressImage /></AppLayout>} />
-        <Route path="/tools/resize-image" element={<AppLayout><ResizeImage /></AppLayout>} />
-        <Route path="/tools/crop-image" element={<AppLayout><CropImage /></AppLayout>} />
-        <Route path="/tools/remove-background" element={<AppLayout><RemoveBg /></AppLayout>} />
-        <Route path="/tools/upscale-image" element={<AppLayout><UpscaleImage /></AppLayout>} />
-        <Route path="/tools/convert-image" element={<AppLayout><ConvertImage /></AppLayout>} />
-        <Route path="/tools/color-correct" element={<AppLayout><ColorCorrect /></AppLayout>} />
-        <Route path="/tools/watermark-image" element={<AppLayout><WatermarkImage /></AppLayout>} />
+        <Route path="/tools/compress-image" element={<CompressImage />} />
+        <Route path="/tools/resize-image" element={<ResizeImage />} />
+        <Route path="/tools/crop-image" element={<CropImage />} />
+        <Route path="/tools/remove-background" element={<RemoveBg />} />
+        <Route path="/tools/upscale-image" element={<UpscaleImage />} />
+        <Route path="/tools/convert-image" element={<ConvertImage />} />
+        <Route path="/tools/color-correct" element={<ColorCorrect />} />
+        <Route path="/tools/watermark-image" element={<WatermarkImage />} />
 
         {/* Text Tools */}
-        <Route path="/tools/spell-check" element={<AppLayout><SpellCheck /></AppLayout>} />
-        <Route path="/tools/paraphrase" element={<AppLayout><Paraphrase /></AppLayout>} />
-        <Route path="/tools/word-counter" element={<AppLayout><WordCounter /></AppLayout>} />
-        <Route path="/tools/diff-checker" element={<AppLayout><DiffChecker /></AppLayout>} />
-        <Route path="/tools/case-converter" element={<AppLayout><CaseConverter /></AppLayout>} />
-        <Route path="/tools/text-to-speech" element={<AppLayout><TextToSpeech /></AppLayout>} />
+        <Route path="/tools/spell-check" element={<SpellCheck />} />
+        <Route path="/tools/paraphrase" element={<Paraphrase />} />
+        <Route path="/tools/word-counter" element={<WordCounter />} />
+        <Route path="/tools/diff-checker" element={<DiffChecker />} />
+        <Route path="/tools/case-converter" element={<CaseConverter />} />
+        <Route path="/tools/text-to-speech" element={<TextToSpeech />} />
 
         {/* Spreadsheet Tools */}
-        <Route path="/tools/csv-to-json" element={<AppLayout><CsvToJson /></AppLayout>} />
-        <Route path="/tools/json-to-csv" element={<AppLayout><JsonToCsv /></AppLayout>} />
-        <Route path="/tools/csv-to-xml" element={<AppLayout><CsvToXml /></AppLayout>} />
-        <Route path="/tools/csv-to-sql" element={<AppLayout><CsvToSql /></AppLayout>} />
-        <Route path="/tools/merge-csv" element={<AppLayout><MergeCsv /></AppLayout>} />
-        <Route path="/tools/split-csv" element={<AppLayout><SplitCsv /></AppLayout>} />
-        <Route path="/tools/fake-data" element={<AppLayout><FakeData /></AppLayout>} />
+        <Route path="/tools/csv-to-json" element={<CsvToJson />} />
+        <Route path="/tools/json-to-csv" element={<JsonToCsv />} />
+        <Route path="/tools/csv-to-xml" element={<CsvToXml />} />
+        <Route path="/tools/csv-to-sql" element={<CsvToSql />} />
+        <Route path="/tools/merge-csv" element={<MergeCsv />} />
+        <Route path="/tools/split-csv" element={<SplitCsv />} />
+        <Route path="/tools/fake-data" element={<FakeData />} />
 
         {/* Calculator Tools */}
-        <Route path="/tools/currency-converter" element={<AppLayout><CurrencyConverter /></AppLayout>} />
-        <Route path="/tools/timezone-converter" element={<AppLayout><TimezoneConverter /></AppLayout>} />
-        <Route path="/tools/unit-converter" element={<AppLayout><UnitConverter /></AppLayout>} />
-        <Route path="/tools/percentage-calculator" element={<AppLayout><PercentageCalculator /></AppLayout>} />
-        <Route path="/tools/tip-calculator" element={<AppLayout><TipCalculator /></AppLayout>} />
-        <Route path="/tools/bmi-calculator" element={<AppLayout><BmiCalculator /></AppLayout>} />
-        <Route path="/tools/loan-calculator" element={<AppLayout><LoanCalculator /></AppLayout>} />
+        <Route path="/tools/currency-converter" element={<CurrencyConverter />} />
+        <Route path="/tools/timezone-converter" element={<TimezoneConverter />} />
+        <Route path="/tools/unit-converter" element={<UnitConverter />} />
+        <Route path="/tools/percentage-calculator" element={<PercentageCalculator />} />
+        <Route path="/tools/tip-calculator" element={<TipCalculator />} />
+        <Route path="/tools/bmi-calculator" element={<BmiCalculator />} />
+        <Route path="/tools/loan-calculator" element={<LoanCalculator />} />
 
         {/* Resize Tools */}
-        <Route path="/tools/resize-by-dimensions" element={<AppLayout><ResizeByDimensions /></AppLayout>} />
-        <Route path="/tools/social-media-resize" element={<AppLayout><SocialMediaResize /></AppLayout>} />
+        <Route path="/tools/resize-by-dimensions" element={<ResizeByDimensions />} />
+        <Route path="/tools/social-media-resize" element={<SocialMediaResize />} />
 
         {/* Enhancer Tools */}
-        <Route path="/tools/ai-upscale" element={<AppLayout><AiUpscale /></AppLayout>} />
-        <Route path="/tools/enhancer-remove-bg" element={<AppLayout><RemoveBgPro /></AppLayout>} />
-        <Route path="/tools/sharpen" element={<AppLayout><Sharpen /></AppLayout>} />
-        <Route path="/tools/art-filters" element={<AppLayout><ArtFilters /></AppLayout>} />
+        <Route path="/tools/ai-upscale" element={<AiUpscale />} />
+        <Route path="/tools/enhancer-remove-bg" element={<RemoveBgPro />} />
+        <Route path="/tools/sharpen" element={<Sharpen />} />
+        <Route path="/tools/art-filters" element={<ArtFilters />} />
 
         {/* Developer & Code Tools */}
-        <Route path="/tools/json-formatter" element={<AppLayout><LazyLoad><JsonFormatter /></LazyLoad></AppLayout>} />
-        <Route path="/tools/xml-formatter" element={<AppLayout><LazyLoad><XmlFormatter /></LazyLoad></AppLayout>} />
-        <Route path="/tools/base64-encoder" element={<AppLayout><LazyLoad><Base64Encoder /></LazyLoad></AppLayout>} />
-        <Route path="/tools/url-encoder" element={<AppLayout><LazyLoad><UrlEncoder /></LazyLoad></AppLayout>} />
-        <Route path="/tools/html-encoder" element={<AppLayout><LazyLoad><HtmlEncoder /></LazyLoad></AppLayout>} />
-        <Route path="/tools/qr-code-generator" element={<AppLayout><LazyLoad><QrCodeGenerator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/uuid-generator" element={<AppLayout><LazyLoad><UuidGenerator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/jwt-decoder" element={<AppLayout><LazyLoad><JwtDecoder /></LazyLoad></AppLayout>} />
-        <Route path="/tools/hash-generator" element={<AppLayout><LazyLoad><HashGenerator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/regex-tester" element={<AppLayout><LazyLoad><RegexTester /></LazyLoad></AppLayout>} />
-        <Route path="/tools/code-minifier" element={<AppLayout><LazyLoad><CodeMinifier /></LazyLoad></AppLayout>} />
-        <Route path="/tools/markdown-converter" element={<AppLayout><LazyLoad><MarkdownConverter /></LazyLoad></AppLayout>} />
-        <Route path="/tools/unix-timestamp" element={<AppLayout><LazyLoad><UnixTimestamp /></LazyLoad></AppLayout>} />
-        <Route path="/tools/json-to-yaml" element={<AppLayout><LazyLoad><JsonToYaml /></LazyLoad></AppLayout>} />
-        <Route path="/tools/css-beautifier" element={<AppLayout><LazyLoad><CssBeautifier /></LazyLoad></AppLayout>} />
+        <Route path="/tools/json-formatter" element={<LazyLoad><JsonFormatter /></LazyLoad>} />
+        <Route path="/tools/xml-formatter" element={<LazyLoad><XmlFormatter /></LazyLoad>} />
+        <Route path="/tools/base64-encoder" element={<LazyLoad><Base64Encoder /></LazyLoad>} />
+        <Route path="/tools/url-encoder" element={<LazyLoad><UrlEncoder /></LazyLoad>} />
+        <Route path="/tools/html-encoder" element={<LazyLoad><HtmlEncoder /></LazyLoad>} />
+        <Route path="/tools/qr-code-generator" element={<LazyLoad><QrCodeGenerator /></LazyLoad>} />
+        <Route path="/tools/uuid-generator" element={<LazyLoad><UuidGenerator /></LazyLoad>} />
+        <Route path="/tools/jwt-decoder" element={<LazyLoad><JwtDecoder /></LazyLoad>} />
+        <Route path="/tools/hash-generator" element={<LazyLoad><HashGenerator /></LazyLoad>} />
+        <Route path="/tools/regex-tester" element={<LazyLoad><RegexTester /></LazyLoad>} />
+        <Route path="/tools/code-minifier" element={<LazyLoad><CodeMinifier /></LazyLoad>} />
+        <Route path="/tools/markdown-converter" element={<LazyLoad><MarkdownConverter /></LazyLoad>} />
+        <Route path="/tools/unix-timestamp" element={<LazyLoad><UnixTimestamp /></LazyLoad>} />
+        <Route path="/tools/json-to-yaml" element={<LazyLoad><JsonToYaml /></LazyLoad>} />
+        <Route path="/tools/css-beautifier" element={<LazyLoad><CssBeautifier /></LazyLoad>} />
 
         {/* Video Tools */}
-        <Route path="/tools/video-compressor" element={<AppLayout><LazyLoad><VideoCompressor /></LazyLoad></AppLayout>} />
-        <Route path="/tools/video-trimmer" element={<AppLayout><LazyLoad><VideoTrimmer /></LazyLoad></AppLayout>} />
-        <Route path="/tools/video-to-gif" element={<AppLayout><LazyLoad><VideoToGif /></LazyLoad></AppLayout>} />
-        <Route path="/tools/video-to-audio" element={<AppLayout><LazyLoad><VideoToAudio /></LazyLoad></AppLayout>} />
-        <Route path="/tools/video-converter" element={<AppLayout><LazyLoad><VideoConverter /></LazyLoad></AppLayout>} />
-        <Route path="/tools/video-merger" element={<AppLayout><LazyLoad><VideoMerger /></LazyLoad></AppLayout>} />
-        <Route path="/tools/video-subtitles" element={<AppLayout><LazyLoad><VideoSubtitles /></LazyLoad></AppLayout>} />
-        <Route path="/tools/reverse-video" element={<AppLayout><LazyLoad><ReverseVideo /></LazyLoad></AppLayout>} />
+        <Route path="/tools/video-compressor" element={<LazyLoad><VideoCompressor /></LazyLoad>} />
+        <Route path="/tools/video-trimmer" element={<LazyLoad><VideoTrimmer /></LazyLoad>} />
+        <Route path="/tools/video-to-gif" element={<LazyLoad><VideoToGif /></LazyLoad>} />
+        <Route path="/tools/video-to-audio" element={<LazyLoad><VideoToAudio /></LazyLoad>} />
+        <Route path="/tools/video-converter" element={<LazyLoad><VideoConverter /></LazyLoad>} />
+        <Route path="/tools/video-merger" element={<LazyLoad><VideoMerger /></LazyLoad>} />
+        <Route path="/tools/video-subtitles" element={<LazyLoad><VideoSubtitles /></LazyLoad>} />
+        <Route path="/tools/reverse-video" element={<LazyLoad><ReverseVideo /></LazyLoad>} />
 
         {/* Audio Tools */}
-        <Route path="/tools/audio-trimmer" element={<AppLayout><LazyLoad><AudioTrimmer /></LazyLoad></AppLayout>} />
-        <Route path="/tools/audio-converter" element={<AppLayout><LazyLoad><AudioConverter /></LazyLoad></AppLayout>} />
-        <Route path="/tools/audio-compressor" element={<AppLayout><LazyLoad><AudioCompressor /></LazyLoad></AppLayout>} />
-        <Route path="/tools/audio-merger" element={<AppLayout><LazyLoad><AudioMerger /></LazyLoad></AppLayout>} />
-        <Route path="/tools/voice-recorder" element={<AppLayout><LazyLoad><VoiceRecorder /></LazyLoad></AppLayout>} />
-        <Route path="/tools/audio-volume" element={<AppLayout><LazyLoad><AudioVolume /></LazyLoad></AppLayout>} />
+        <Route path="/tools/audio-trimmer" element={<LazyLoad><AudioTrimmer /></LazyLoad>} />
+        <Route path="/tools/audio-converter" element={<LazyLoad><AudioConverter /></LazyLoad>} />
+        <Route path="/tools/audio-compressor" element={<LazyLoad><AudioCompressor /></LazyLoad>} />
+        <Route path="/tools/audio-merger" element={<LazyLoad><AudioMerger /></LazyLoad>} />
+        <Route path="/tools/voice-recorder" element={<LazyLoad><VoiceRecorder /></LazyLoad>} />
+        <Route path="/tools/audio-volume" element={<LazyLoad><AudioVolume /></LazyLoad>} />
 
         {/* Color Tools */}
-        <Route path="/tools/color-picker" element={<AppLayout><LazyLoad><ColorPicker /></LazyLoad></AppLayout>} />
-        <Route path="/tools/palette-generator" element={<AppLayout><LazyLoad><PaletteGenerator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/gradient-generator" element={<AppLayout><LazyLoad><GradientGenerator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/contrast-checker" element={<AppLayout><LazyLoad><ContrastChecker /></LazyLoad></AppLayout>} />
-        <Route path="/tools/color-converter" element={<AppLayout><LazyLoad><ColorConverter /></LazyLoad></AppLayout>} />
+        <Route path="/tools/color-picker" element={<LazyLoad><ColorPicker /></LazyLoad>} />
+        <Route path="/tools/palette-generator" element={<LazyLoad><PaletteGenerator /></LazyLoad>} />
+        <Route path="/tools/gradient-generator" element={<LazyLoad><GradientGenerator /></LazyLoad>} />
+        <Route path="/tools/contrast-checker" element={<LazyLoad><ContrastChecker /></LazyLoad>} />
+        <Route path="/tools/color-converter" element={<LazyLoad><ColorConverter /></LazyLoad>} />
 
         {/* Date & Time Tools */}
-        <Route path="/tools/age-calculator" element={<AppLayout><LazyLoad><AgeCalculator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/date-difference" element={<AppLayout><LazyLoad><DateDifference /></LazyLoad></AppLayout>} />
-        <Route path="/tools/day-finder" element={<AppLayout><LazyLoad><DayFinder /></LazyLoad></AppLayout>} />
-        <Route path="/tools/add-subtract-days" element={<AppLayout><LazyLoad><AddSubtractDays /></LazyLoad></AppLayout>} />
-        <Route path="/tools/stopwatch-countdown" element={<AppLayout><LazyLoad><StopwatchCountdown /></LazyLoad></AppLayout>} />
+        <Route path="/tools/age-calculator" element={<LazyLoad><AgeCalculator /></LazyLoad>} />
+        <Route path="/tools/date-difference" element={<LazyLoad><DateDifference /></LazyLoad>} />
+        <Route path="/tools/day-finder" element={<LazyLoad><DayFinder /></LazyLoad>} />
+        <Route path="/tools/add-subtract-days" element={<LazyLoad><AddSubtractDays /></LazyLoad>} />
+        <Route path="/tools/stopwatch-countdown" element={<LazyLoad><StopwatchCountdown /></LazyLoad>} />
 
         {/* Security Tools */}
-        <Route path="/tools/password-generator" element={<AppLayout><LazyLoad><PasswordGenerator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/password-strength" element={<AppLayout><LazyLoad><PasswordStrength /></LazyLoad></AppLayout>} />
-        <Route path="/tools/random-dice" element={<AppLayout><LazyLoad><RandomDice /></LazyLoad></AppLayout>} />
-        <Route path="/tools/pick-random" element={<AppLayout><LazyLoad><PickRandom /></LazyLoad></AppLayout>} />
-        <Route path="/tools/bcrypt-generator" element={<AppLayout><LazyLoad><BcryptGenerator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/hmac-generator" element={<AppLayout><LazyLoad><HmacGenerator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/checksum-file" element={<AppLayout><LazyLoad><ChecksumFile /></LazyLoad></AppLayout>} />
+        <Route path="/tools/password-generator" element={<LazyLoad><PasswordGenerator /></LazyLoad>} />
+        <Route path="/tools/password-strength" element={<LazyLoad><PasswordStrength /></LazyLoad>} />
+        <Route path="/tools/random-dice" element={<LazyLoad><RandomDice /></LazyLoad>} />
+        <Route path="/tools/pick-random" element={<LazyLoad><PickRandom /></LazyLoad>} />
+        <Route path="/tools/bcrypt-generator" element={<LazyLoad><BcryptGenerator /></LazyLoad>} />
+        <Route path="/tools/hmac-generator" element={<LazyLoad><HmacGenerator /></LazyLoad>} />
+        <Route path="/tools/checksum-file" element={<LazyLoad><ChecksumFile /></LazyLoad>} />
 
         {/* Extended Text Tools */}
-        <Route path="/tools/lorem-ipsum" element={<AppLayout><LazyLoad><LoremIpsum /></LazyLoad></AppLayout>} />
-        <Route path="/tools/duplicate-remover" element={<AppLayout><LazyLoad><DuplicateRemover /></LazyLoad></AppLayout>} />
-        <Route path="/tools/line-shuffler" element={<AppLayout><LazyLoad><LineShuffler /></LazyLoad></AppLayout>} />
-        <Route path="/tools/text-to-slug" element={<AppLayout><LazyLoad><TextToSlug /></LazyLoad></AppLayout>} />
-        <Route path="/tools/reverse-text" element={<AppLayout><LazyLoad><ReverseText /></LazyLoad></AppLayout>} />
-        <Route path="/tools/char-counter" element={<AppLayout><LazyLoad><CharCounter /></LazyLoad></AppLayout>} />
-        <Route path="/tools/text-repeater" element={<AppLayout><LazyLoad><TextRepeater /></LazyLoad></AppLayout>} />
-        <Route path="/tools/list-sorter" element={<AppLayout><LazyLoad><ListSorter /></LazyLoad></AppLayout>} />
-        <Route path="/tools/speech-to-text" element={<AppLayout><LazyLoad><SpeechToText /></LazyLoad></AppLayout>} />
-        <Route path="/tools/find-replace" element={<AppLayout><LazyLoad><FindReplace /></LazyLoad></AppLayout>} />
+        <Route path="/tools/lorem-ipsum" element={<LazyLoad><LoremIpsum /></LazyLoad>} />
+        <Route path="/tools/duplicate-remover" element={<LazyLoad><DuplicateRemover /></LazyLoad>} />
+        <Route path="/tools/line-shuffler" element={<LazyLoad><LineShuffler /></LazyLoad>} />
+        <Route path="/tools/text-to-slug" element={<LazyLoad><TextToSlug /></LazyLoad>} />
+        <Route path="/tools/reverse-text" element={<LazyLoad><ReverseText /></LazyLoad>} />
+        <Route path="/tools/char-counter" element={<LazyLoad><CharCounter /></LazyLoad>} />
+        <Route path="/tools/text-repeater" element={<LazyLoad><TextRepeater /></LazyLoad>} />
+        <Route path="/tools/list-sorter" element={<LazyLoad><ListSorter /></LazyLoad>} />
+        <Route path="/tools/speech-to-text" element={<LazyLoad><SpeechToText /></LazyLoad>} />
+        <Route path="/tools/find-replace" element={<LazyLoad><FindReplace /></LazyLoad>} />
 
         {/* Document & Ebook Tools */}
-        <Route path="/tools/epub-to-pdf" element={<AppLayout><LazyLoad><EpubToPdf /></LazyLoad></AppLayout>} />
-        <Route path="/tools/pdf-to-epub" element={<AppLayout><LazyLoad><PdfToEpub /></LazyLoad></AppLayout>} />
-        <Route path="/tools/resize-epub" element={<AppLayout><LazyLoad><ResizeEpub /></LazyLoad></AppLayout>} />
-        <Route path="/tools/rtf-to-pdf" element={<AppLayout><LazyLoad><RtfToPdf /></LazyLoad></AppLayout>} />
+        <Route path="/tools/epub-to-pdf" element={<LazyLoad><EpubToPdf /></LazyLoad>} />
+        <Route path="/tools/pdf-to-epub" element={<LazyLoad><PdfToEpub /></LazyLoad>} />
+        <Route path="/tools/resize-epub" element={<LazyLoad><ResizeEpub /></LazyLoad>} />
+        <Route path="/tools/rtf-to-pdf" element={<LazyLoad><RtfToPdf /></LazyLoad>} />
 
         {/* Archive Tools */}
-        <Route path="/tools/create-zip" element={<AppLayout><LazyLoad><CreateZip /></LazyLoad></AppLayout>} />
-        <Route path="/tools/extract-archive" element={<AppLayout><LazyLoad><ExtractArchive /></LazyLoad></AppLayout>} />
-        <Route path="/tools/compress-folder" element={<AppLayout><LazyLoad><CompressFolder /></LazyLoad></AppLayout>} />
-        <Route path="/tools/unzip-specific" element={<AppLayout><LazyLoad><UnzipSpecific /></LazyLoad></AppLayout>} />
+        <Route path="/tools/create-zip" element={<LazyLoad><CreateZip /></LazyLoad>} />
+        <Route path="/tools/extract-archive" element={<LazyLoad><ExtractArchive /></LazyLoad>} />
+        <Route path="/tools/compress-folder" element={<LazyLoad><CompressFolder /></LazyLoad>} />
+        <Route path="/tools/unzip-specific" element={<LazyLoad><UnzipSpecific /></LazyLoad>} />
 
         {/* Network Tools */}
-        <Route path="/tools/whats-my-ip" element={<AppLayout><LazyLoad><WhatsMyIp /></LazyLoad></AppLayout>} />
-        <Route path="/tools/user-agent-parser" element={<AppLayout><LazyLoad><UserAgentParser /></LazyLoad></AppLayout>} />
-        <Route path="/tools/internet-speed-test" element={<AppLayout><LazyLoad><InternetSpeedTest /></LazyLoad></AppLayout>} />
-        <Route path="/tools/url-parser" element={<AppLayout><LazyLoad><UrlParser /></LazyLoad></AppLayout>} />
+        <Route path="/tools/whats-my-ip" element={<LazyLoad><WhatsMyIp /></LazyLoad>} />
+        <Route path="/tools/user-agent-parser" element={<LazyLoad><UserAgentParser /></LazyLoad>} />
+        <Route path="/tools/internet-speed-test" element={<LazyLoad><InternetSpeedTest /></LazyLoad>} />
+        <Route path="/tools/url-parser" element={<LazyLoad><UrlParser /></LazyLoad>} />
 
         {/* Social Tools */}
-        <Route path="/tools/meta-tags-preview" element={<AppLayout><LazyLoad><MetaTagsPreview /></LazyLoad></AppLayout>} />
-        <Route path="/tools/youtube-thumbnail" element={<AppLayout><LazyLoad><YoutubeThumbnail /></LazyLoad></AppLayout>} />
-        <Route path="/tools/hashtag-generator" element={<AppLayout><LazyLoad><HashtagGenerator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/email-signature" element={<AppLayout><LazyLoad><EmailSignature /></LazyLoad></AppLayout>} />
-        <Route path="/tools/qr-code-scanner" element={<AppLayout><LazyLoad><QrCodeScanner /></LazyLoad></AppLayout>} />
-        <Route path="/tools/barcode-generator" element={<AppLayout><LazyLoad><BarcodeGenerator /></LazyLoad></AppLayout>} />
+        <Route path="/tools/meta-tags-preview" element={<LazyLoad><MetaTagsPreview /></LazyLoad>} />
+        <Route path="/tools/youtube-thumbnail" element={<LazyLoad><YoutubeThumbnail /></LazyLoad>} />
+        <Route path="/tools/hashtag-generator" element={<LazyLoad><HashtagGenerator /></LazyLoad>} />
+        <Route path="/tools/email-signature" element={<LazyLoad><EmailSignature /></LazyLoad>} />
+        <Route path="/tools/qr-code-scanner" element={<LazyLoad><QrCodeScanner /></LazyLoad>} />
+        <Route path="/tools/barcode-generator" element={<LazyLoad><BarcodeGenerator /></LazyLoad>} />
 
         {/* Design Tools */}
-        <Route path="/tools/meme-generator" element={<AppLayout><LazyLoad><MemeGenerator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/image-collage" element={<AppLayout><LazyLoad><ImageCollage /></LazyLoad></AppLayout>} />
-        <Route path="/tools/image-splitter" element={<AppLayout><LazyLoad><ImageSplitter /></LazyLoad></AppLayout>} />
-        <Route path="/tools/favicon-generator" element={<AppLayout><LazyLoad><FaviconGenerator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/whiteboard" element={<AppLayout><LazyLoad><Whiteboard /></LazyLoad></AppLayout>} />
-        <Route path="/tools/palette-from-image" element={<AppLayout><LazyLoad><PaletteFromImage /></LazyLoad></AppLayout>} />
+        <Route path="/tools/meme-generator" element={<LazyLoad><MemeGenerator /></LazyLoad>} />
+        <Route path="/tools/image-collage" element={<LazyLoad><ImageCollage /></LazyLoad>} />
+        <Route path="/tools/image-splitter" element={<LazyLoad><ImageSplitter /></LazyLoad>} />
+        <Route path="/tools/favicon-generator" element={<LazyLoad><FaviconGenerator /></LazyLoad>} />
+        <Route path="/tools/whiteboard" element={<LazyLoad><Whiteboard /></LazyLoad>} />
+        <Route path="/tools/palette-from-image" element={<LazyLoad><PaletteFromImage /></LazyLoad>} />
 
         {/* Productivity Tools */}
-        <Route path="/tools/ocr-image" element={<AppLayout><LazyLoad><OcrImage /></LazyLoad></AppLayout>} />
-        <Route path="/tools/handwriting-generator" element={<AppLayout><LazyLoad><HandwritingGenerator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/pdf-to-excel" element={<AppLayout><LazyLoad><PdfToExcel /></LazyLoad></AppLayout>} />
-        <Route path="/tools/excel-to-pdf" element={<AppLayout><LazyLoad><ExcelToPdf /></LazyLoad></AppLayout>} />
-        <Route path="/tools/merge-word" element={<AppLayout><LazyLoad><MergeWord /></LazyLoad></AppLayout>} />
-        <Route path="/tools/split-word" element={<AppLayout><LazyLoad><SplitWord /></LazyLoad></AppLayout>} />
+        <Route path="/tools/ocr-image" element={<LazyLoad><OcrImage /></LazyLoad>} />
+        <Route path="/tools/handwriting-generator" element={<LazyLoad><HandwritingGenerator /></LazyLoad>} />
+        <Route path="/tools/pdf-to-excel" element={<LazyLoad><PdfToExcel /></LazyLoad>} />
+        <Route path="/tools/excel-to-pdf" element={<LazyLoad><ExcelToPdf /></LazyLoad>} />
+        <Route path="/tools/merge-word" element={<LazyLoad><MergeWord /></LazyLoad>} />
+        <Route path="/tools/split-word" element={<LazyLoad><SplitWord /></LazyLoad>} />
 
         {/* Fun Tools */}
-        <Route path="/tools/word-cloud" element={<AppLayout><LazyLoad><WordCloud /></LazyLoad></AppLayout>} />
-        <Route path="/tools/readability-score" element={<AppLayout><LazyLoad><ReadabilityScore /></LazyLoad></AppLayout>} />
-        <Route path="/tools/char-frequency" element={<AppLayout><LazyLoad><CharFrequency /></LazyLoad></AppLayout>} />
-        <Route path="/tools/spin-wheel" element={<AppLayout><LazyLoad><SpinWheel /></LazyLoad></AppLayout>} />
-        <Route path="/tools/random-name-picker" element={<AppLayout><LazyLoad><RandomNamePicker /></LazyLoad></AppLayout>} />
+        <Route path="/tools/word-cloud" element={<LazyLoad><WordCloud /></LazyLoad>} />
+        <Route path="/tools/readability-score" element={<LazyLoad><ReadabilityScore /></LazyLoad>} />
+        <Route path="/tools/char-frequency" element={<LazyLoad><CharFrequency /></LazyLoad>} />
+        <Route path="/tools/spin-wheel" element={<LazyLoad><SpinWheel /></LazyLoad>} />
+        <Route path="/tools/random-name-picker" element={<LazyLoad><RandomNamePicker /></LazyLoad>} />
 
         {/* Extra Audio/Video Tools */}
-        <Route path="/tools/screen-recorder" element={<AppLayout><LazyLoad><ScreenRecorder /></LazyLoad></AppLayout>} />
-        <Route path="/tools/webcam-recorder" element={<AppLayout><LazyLoad><WebcamRecorder /></LazyLoad></AppLayout>} />
-        <Route path="/tools/karaoke-recorder" element={<AppLayout><LazyLoad><KaraokeRecorder /></LazyLoad></AppLayout>} />
+        <Route path="/tools/screen-recorder" element={<LazyLoad><ScreenRecorder /></LazyLoad>} />
+        <Route path="/tools/webcam-recorder" element={<LazyLoad><WebcamRecorder /></LazyLoad>} />
+        <Route path="/tools/karaoke-recorder" element={<LazyLoad><KaraokeRecorder /></LazyLoad>} />
 
         {/* Fun Tools */}
-        <Route path="/tools/pomodoro-timer" element={<AppLayout><LazyLoad><PomodoroTimer /></LazyLoad></AppLayout>} />
+        <Route path="/tools/pomodoro-timer" element={<LazyLoad><PomodoroTimer /></LazyLoad>} />
 
         {/* Network Tools - continued */}
-        <Route path="/tools/http-header-viewer" element={<AppLayout><LazyLoad><HttpHeaderViewer /></LazyLoad></AppLayout>} />
+        <Route path="/tools/http-header-viewer" element={<LazyLoad><HttpHeaderViewer /></LazyLoad>} />
 
         {/* Viral Tools */}
-        <Route path="/tools/resume-builder" element={<AppLayout><LazyLoad><ResumeBuilder /></LazyLoad></AppLayout>} />
-        <Route path="/tools/invoice-generator" element={<AppLayout><LazyLoad><InvoiceGenerator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/calendar-generator" element={<AppLayout><LazyLoad><CalendarGenerator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/qr-business-card" element={<AppLayout><LazyLoad><QrBusinessCard /></LazyLoad></AppLayout>} />
-        <Route path="/tools/subtitle-generator" element={<AppLayout><LazyLoad><SubtitleGenerator /></LazyLoad></AppLayout>} />
+        <Route path="/tools/resume-builder" element={<LazyLoad><ResumeBuilder /></LazyLoad>} />
+        <Route path="/tools/invoice-generator" element={<LazyLoad><InvoiceGenerator /></LazyLoad>} />
+        <Route path="/tools/calendar-generator" element={<LazyLoad><CalendarGenerator /></LazyLoad>} />
+        <Route path="/tools/qr-business-card" element={<LazyLoad><QrBusinessCard /></LazyLoad>} />
+        <Route path="/tools/subtitle-generator" element={<LazyLoad><SubtitleGenerator /></LazyLoad>} />
 
         {/* --- GAMES --- */}
-        <Route path="/games/wordle" element={<AppLayout><LazyLoad><WordleGame /></LazyLoad></AppLayout>} />
-        <Route path="/games/2048" element={<AppLayout><LazyLoad><Game2048 /></LazyLoad></AppLayout>} />
-        <Route path="/games/sudoku" element={<AppLayout><LazyLoad><SudokuGame /></LazyLoad></AppLayout>} />
-        <Route path="/games/minesweeper" element={<AppLayout><LazyLoad><MinesweeperGame /></LazyLoad></AppLayout>} />
-        <Route path="/games/chess" element={<AppLayout><LazyLoad><ChessGame /></LazyLoad></AppLayout>} />
-        <Route path="/games/checkers" element={<AppLayout><LazyLoad><CheckersGame /></LazyLoad></AppLayout>} />
-        <Route path="/games/memory" element={<AppLayout><LazyLoad><MemoryCardFlip /></LazyLoad></AppLayout>} />
-        <Route path="/games/snake" element={<AppLayout><LazyLoad><SnakeGame /></LazyLoad></AppLayout>} />
-        <Route path="/games/tetris" element={<AppLayout><LazyLoad><TetrisGame /></LazyLoad></AppLayout>} />
-        <Route path="/games/tic-tac-toe" element={<AppLayout><LazyLoad><TicTacToe /></LazyLoad></AppLayout>} />
-        <Route path="/games/15-puzzle" element={<AppLayout><LazyLoad><SlidingPuzzle /></LazyLoad></AppLayout>} />
-        <Route path="/games/typing-test" element={<AppLayout><LazyLoad><TypingSpeedTest /></LazyLoad></AppLayout>} />
-        <Route path="/games/math-challenge" element={<AppLayout><LazyLoad><MathSpeedChallenge /></LazyLoad></AppLayout>} />
-        <Route path="/games/flag-quiz" element={<AppLayout><LazyLoad><FlagQuiz /></LazyLoad></AppLayout>} />
-        <Route path="/games/reaction-time" element={<AppLayout><LazyLoad><ReactionTimeTester /></LazyLoad></AppLayout>} />
-        <Route path="/games/simon-says" element={<AppLayout><LazyLoad><ColorMemoryGame /></LazyLoad></AppLayout>} />
-        <Route path="/games/geography-quiz" element={<AppLayout><LazyLoad><GeographyQuiz /></LazyLoad></AppLayout>} />
-        <Route path="/games/flappy-bird" element={<AppLayout><LazyLoad><FlappyBirdClone /></LazyLoad></AppLayout>} />
-        <Route path="/games/dino-run" element={<AppLayout><LazyLoad><DinoRunGame /></LazyLoad></AppLayout>} />
-        <Route path="/games/rock-paper-scissors" element={<AppLayout><LazyLoad><RockPaperScissors /></LazyLoad></AppLayout>} />
-        <Route path="/games/cookie-clicker" element={<AppLayout><LazyLoad><CookieClicker /></LazyLoad></AppLayout>} />
-        <Route path="/games/trivia" element={<AppLayout><LazyLoad><TriviaQuiz /></LazyLoad></AppLayout>} />
-        <Route path="/games/draw-and-guess" element={<AppLayout><LazyLoad><DrawAndGuess /></LazyLoad></AppLayout>} />
-        <Route path="/games/multiplayer" element={<AppLayout><LazyLoad><MultiplayerLobby /></LazyLoad></AppLayout>} />
+        <Route path="/games/wordle" element={<LazyLoad><WordleGame /></LazyLoad>} />
+        <Route path="/games/2048" element={<LazyLoad><Game2048 /></LazyLoad>} />
+        <Route path="/games/sudoku" element={<LazyLoad><SudokuGame /></LazyLoad>} />
+        <Route path="/games/minesweeper" element={<LazyLoad><MinesweeperGame /></LazyLoad>} />
+        <Route path="/games/chess" element={<LazyLoad><ChessGame /></LazyLoad>} />
+        <Route path="/games/checkers" element={<LazyLoad><CheckersGame /></LazyLoad>} />
+        <Route path="/games/memory" element={<LazyLoad><MemoryCardFlip /></LazyLoad>} />
+        <Route path="/games/snake" element={<LazyLoad><SnakeGame /></LazyLoad>} />
+        <Route path="/games/tetris" element={<LazyLoad><TetrisGame /></LazyLoad>} />
+        <Route path="/games/tic-tac-toe" element={<LazyLoad><TicTacToe /></LazyLoad>} />
+        <Route path="/games/15-puzzle" element={<LazyLoad><SlidingPuzzle /></LazyLoad>} />
+        <Route path="/games/typing-test" element={<LazyLoad><TypingSpeedTest /></LazyLoad>} />
+        <Route path="/games/math-challenge" element={<LazyLoad><MathSpeedChallenge /></LazyLoad>} />
+        <Route path="/games/flag-quiz" element={<LazyLoad><FlagQuiz /></LazyLoad>} />
+        <Route path="/games/reaction-time" element={<LazyLoad><ReactionTimeTester /></LazyLoad>} />
+        <Route path="/games/simon-says" element={<LazyLoad><ColorMemoryGame /></LazyLoad>} />
+        <Route path="/games/geography-quiz" element={<LazyLoad><GeographyQuiz /></LazyLoad>} />
+        <Route path="/games/flappy-bird" element={<LazyLoad><FlappyBirdClone /></LazyLoad>} />
+        <Route path="/games/dino-run" element={<LazyLoad><DinoRunGame /></LazyLoad>} />
+        <Route path="/games/rock-paper-scissors" element={<LazyLoad><RockPaperScissors /></LazyLoad>} />
+        <Route path="/games/cookie-clicker" element={<LazyLoad><CookieClicker /></LazyLoad>} />
+        <Route path="/games/trivia" element={<LazyLoad><TriviaQuiz /></LazyLoad>} />
+        <Route path="/games/draw-and-guess" element={<LazyLoad><DrawAndGuess /></LazyLoad>} />
+        <Route path="/games/multiplayer" element={<LazyLoad><MultiplayerLobby /></LazyLoad>} />
 
         {/* --- LANGUAGE --- */}
-        <Route path="/tools/text-translator" element={<AppLayout><LazyLoad><TextTranslator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/language-detector" element={<AppLayout><LazyLoad><LanguageDetector /></LazyLoad></AppLayout>} />
-        <Route path="/tools/pinyin-converter" element={<AppLayout><LazyLoad><PinyinConverter /></LazyLoad></AppLayout>} />
-        <Route path="/tools/furigana-generator" element={<AppLayout><LazyLoad><FuriganaGenerator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/morse-code" element={<AppLayout><LazyLoad><MorseCodeTranslator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/number-to-words" element={<AppLayout><LazyLoad><NumberToWords /></LazyLoad></AppLayout>} />
-        <Route path="/tools/chinese-char-counter" element={<AppLayout><LazyLoad><ChineseCharCounter /></LazyLoad></AppLayout>} />
-        <Route path="/tools/binary-hex-converter" element={<AppLayout><LazyLoad><BinaryHexConverter /></LazyLoad></AppLayout>} />
-        <Route path="/tools/romaji-converter" element={<AppLayout><LazyLoad><RomajiConverter /></LazyLoad></AppLayout>} />
+        <Route path="/tools/text-translator" element={<LazyLoad><TextTranslator /></LazyLoad>} />
+        <Route path="/tools/language-detector" element={<LazyLoad><LanguageDetector /></LazyLoad>} />
+        <Route path="/tools/pinyin-converter" element={<LazyLoad><PinyinConverter /></LazyLoad>} />
+        <Route path="/tools/furigana-generator" element={<LazyLoad><FuriganaGenerator /></LazyLoad>} />
+        <Route path="/tools/morse-code" element={<LazyLoad><MorseCodeTranslator /></LazyLoad>} />
+        <Route path="/tools/number-to-words" element={<LazyLoad><NumberToWords /></LazyLoad>} />
+        <Route path="/tools/chinese-char-counter" element={<LazyLoad><ChineseCharCounter /></LazyLoad>} />
+        <Route path="/tools/binary-hex-converter" element={<LazyLoad><BinaryHexConverter /></LazyLoad>} />
+        <Route path="/tools/romaji-converter" element={<LazyLoad><RomajiConverter /></LazyLoad>} />
 
         {/* --- MATH --- */}
-        <Route path="/tools/scientific-calculator" element={<AppLayout><LazyLoad><ScientificCalculator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/fraction-calculator" element={<AppLayout><LazyLoad><FractionCalculator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/lcm-gcd" element={<AppLayout><LazyLoad><LcmGcdCalculator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/prime-checker" element={<AppLayout><LazyLoad><PrimeChecker /></LazyLoad></AppLayout>} />
-        <Route path="/tools/matrix-calculator" element={<AppLayout><LazyLoad><MatrixCalculator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/quadratic-solver" element={<AppLayout><LazyLoad><QuadraticSolver /></LazyLoad></AppLayout>} />
-        <Route path="/tools/statistics-calculator" element={<AppLayout><LazyLoad><StatisticsCalculator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/number-base-converter" element={<AppLayout><LazyLoad><NumberBaseConverter /></LazyLoad></AppLayout>} />
-        <Route path="/tools/gst-tax-calculator" element={<AppLayout><LazyLoad><GstTaxCalculator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/fuel-calculator" element={<AppLayout><LazyLoad><FuelCalculator /></LazyLoad></AppLayout>} />
+        <Route path="/tools/scientific-calculator" element={<LazyLoad><ScientificCalculator /></LazyLoad>} />
+        <Route path="/tools/fraction-calculator" element={<LazyLoad><FractionCalculator /></LazyLoad>} />
+        <Route path="/tools/lcm-gcd" element={<LazyLoad><LcmGcdCalculator /></LazyLoad>} />
+        <Route path="/tools/prime-checker" element={<LazyLoad><PrimeChecker /></LazyLoad>} />
+        <Route path="/tools/matrix-calculator" element={<LazyLoad><MatrixCalculator /></LazyLoad>} />
+        <Route path="/tools/quadratic-solver" element={<LazyLoad><QuadraticSolver /></LazyLoad>} />
+        <Route path="/tools/statistics-calculator" element={<LazyLoad><StatisticsCalculator /></LazyLoad>} />
+        <Route path="/tools/number-base-converter" element={<LazyLoad><NumberBaseConverter /></LazyLoad>} />
+        <Route path="/tools/gst-tax-calculator" element={<LazyLoad><GstTaxCalculator /></LazyLoad>} />
+        <Route path="/tools/fuel-calculator" element={<LazyLoad><FuelCalculator /></LazyLoad>} />
 
         {/* --- HEALTH --- */}
-        <Route path="/tools/calorie-calculator" element={<AppLayout><LazyLoad><CalorieCalculator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/body-fat-calculator" element={<AppLayout><LazyLoad><BodyFatCalculator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/water-intake" element={<AppLayout><LazyLoad><WaterIntakeCalculator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/pregnancy-calculator" element={<AppLayout><LazyLoad><PregnancyCalculator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/ovulation-calculator" element={<AppLayout><LazyLoad><OvulationCalculator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/blood-pressure" element={<AppLayout><LazyLoad><BloodPressureChecker /></LazyLoad></AppLayout>} />
-        <Route path="/tools/heart-rate-zones" element={<AppLayout><LazyLoad><HeartRateZones /></LazyLoad></AppLayout>} />
+        <Route path="/tools/calorie-calculator" element={<LazyLoad><CalorieCalculator /></LazyLoad>} />
+        <Route path="/tools/body-fat-calculator" element={<LazyLoad><BodyFatCalculator /></LazyLoad>} />
+        <Route path="/tools/water-intake" element={<LazyLoad><WaterIntakeCalculator /></LazyLoad>} />
+        <Route path="/tools/pregnancy-calculator" element={<LazyLoad><PregnancyCalculator /></LazyLoad>} />
+        <Route path="/tools/ovulation-calculator" element={<LazyLoad><OvulationCalculator /></LazyLoad>} />
+        <Route path="/tools/blood-pressure" element={<LazyLoad><BloodPressureChecker /></LazyLoad>} />
+        <Route path="/tools/heart-rate-zones" element={<LazyLoad><HeartRateZones /></LazyLoad>} />
 
         {/* --- FINANCE --- */}
-        <Route path="/tools/interest-calculator" element={<AppLayout><LazyLoad><InterestCalculator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/sip-calculator" element={<AppLayout><LazyLoad><SipCalculator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/roi-calculator" element={<AppLayout><LazyLoad><RoiCalculator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/budget-planner" element={<AppLayout><LazyLoad><BudgetPlanner /></LazyLoad></AppLayout>} />
+        <Route path="/tools/interest-calculator" element={<LazyLoad><InterestCalculator /></LazyLoad>} />
+        <Route path="/tools/sip-calculator" element={<LazyLoad><SipCalculator /></LazyLoad>} />
+        <Route path="/tools/roi-calculator" element={<LazyLoad><RoiCalculator /></LazyLoad>} />
+        <Route path="/tools/budget-planner" element={<LazyLoad><BudgetPlanner /></LazyLoad>} />
 
         {/* --- IMAGE EXTRAS --- */}
-        <Route path="/tools/pencil-sketch" element={<AppLayout><LazyLoad><PencilSketch /></LazyLoad></AppLayout>} />
-        <Route path="/tools/passport-photo" element={<AppLayout><LazyLoad><PassportPhoto /></LazyLoad></AppLayout>} />
-        <Route path="/tools/image-border" element={<AppLayout><LazyLoad><ImageBorderFrame /></LazyLoad></AppLayout>} />
-        <Route path="/tools/screenshot-to-pdf" element={<AppLayout><LazyLoad><ScreenshotToPdf /></LazyLoad></AppLayout>} />
-        <Route path="/tools/heic-to-jpg" element={<AppLayout><LazyLoad><HeicToJpg /></LazyLoad></AppLayout>} />
-        <Route path="/tools/svg-to-png" element={<AppLayout><LazyLoad><SvgToPng /></LazyLoad></AppLayout>} />
+        <Route path="/tools/pencil-sketch" element={<LazyLoad><PencilSketch /></LazyLoad>} />
+        <Route path="/tools/passport-photo" element={<LazyLoad><PassportPhoto /></LazyLoad>} />
+        <Route path="/tools/image-border" element={<LazyLoad><ImageBorderFrame /></LazyLoad>} />
+        <Route path="/tools/screenshot-to-pdf" element={<LazyLoad><ScreenshotToPdf /></LazyLoad>} />
+        <Route path="/tools/heic-to-jpg" element={<LazyLoad><HeicToJpg /></LazyLoad>} />
+        <Route path="/tools/svg-to-png" element={<LazyLoad><SvgToPng /></LazyLoad>} />
 
         {/* --- UNIT CONVERTERS --- */}
-        <Route path="/tools/data-storage-converter" element={<AppLayout><LazyLoad><DataStorageConverter /></LazyLoad></AppLayout>} />
-        <Route path="/tools/cooking-converter" element={<AppLayout><LazyLoad><CookingConverter /></LazyLoad></AppLayout>} />
-        <Route path="/tools/shoe-size-converter" element={<AppLayout><LazyLoad><ShoeSizeConverter /></LazyLoad></AppLayout>} />
-        <Route path="/tools/clothing-size-converter" element={<AppLayout><LazyLoad><ClothingSizeConverter /></LazyLoad></AppLayout>} />
+        <Route path="/tools/data-storage-converter" element={<LazyLoad><DataStorageConverter /></LazyLoad>} />
+        <Route path="/tools/cooking-converter" element={<LazyLoad><CookingConverter /></LazyLoad>} />
+        <Route path="/tools/shoe-size-converter" element={<LazyLoad><ShoeSizeConverter /></LazyLoad>} />
+        <Route path="/tools/clothing-size-converter" element={<LazyLoad><ClothingSizeConverter /></LazyLoad>} />
 
         {/* --- WRITING --- */}
-        <Route path="/tools/cover-letter" element={<AppLayout><LazyLoad><CoverLetterTemplate /></LazyLoad></AppLayout>} />
-        <Route path="/tools/haiku-generator" element={<AppLayout><LazyLoad><HaikuGenerator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/duplicate-sentences" element={<AppLayout><LazyLoad><DuplicateSentenceFinder /></LazyLoad></AppLayout>} />
+        <Route path="/tools/cover-letter" element={<LazyLoad><CoverLetterTemplate /></LazyLoad>} />
+        <Route path="/tools/haiku-generator" element={<LazyLoad><HaikuGenerator /></LazyLoad>} />
+        <Route path="/tools/duplicate-sentences" element={<LazyLoad><DuplicateSentenceFinder /></LazyLoad>} />
 
         {/* --- EDUCATION --- */}
-        <Route path="/tools/citation-generator" element={<AppLayout><LazyLoad><CitationGenerator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/flashcard-maker" element={<AppLayout><LazyLoad><FlashcardMaker /></LazyLoad></AppLayout>} />
-        <Route path="/tools/quiz-maker" element={<AppLayout><LazyLoad><QuizMaker /></LazyLoad></AppLayout>} />
-        <Route path="/tools/exam-countdown" element={<AppLayout><LazyLoad><ExamCountdown /></LazyLoad></AppLayout>} />
-        <Route path="/tools/essay-outline" element={<AppLayout><LazyLoad><EssayOutline /></LazyLoad></AppLayout>} />
-        <Route path="/tools/periodic-table" element={<AppLayout><LazyLoad><PeriodicTable /></LazyLoad></AppLayout>} />
-        <Route path="/tools/multiplication-table" element={<AppLayout><LazyLoad><MultiplicationTable /></LazyLoad></AppLayout>} />
-        <Route path="/tools/study-timetable" element={<AppLayout><LazyLoad><StudyTimetable /></LazyLoad></AppLayout>} />
-        <Route path="/tools/venn-diagram" element={<AppLayout><LazyLoad><VennDiagram /></LazyLoad></AppLayout>} />
-        <Route path="/tools/plagiarism-checker" element={<AppLayout><LazyLoad><PlagiarismChecker /></LazyLoad></AppLayout>} />
+        <Route path="/tools/citation-generator" element={<LazyLoad><CitationGenerator /></LazyLoad>} />
+        <Route path="/tools/flashcard-maker" element={<LazyLoad><FlashcardMaker /></LazyLoad>} />
+        <Route path="/tools/quiz-maker" element={<LazyLoad><QuizMaker /></LazyLoad>} />
+        <Route path="/tools/exam-countdown" element={<LazyLoad><ExamCountdown /></LazyLoad>} />
+        <Route path="/tools/essay-outline" element={<LazyLoad><EssayOutline /></LazyLoad>} />
+        <Route path="/tools/periodic-table" element={<LazyLoad><PeriodicTable /></LazyLoad>} />
+        <Route path="/tools/multiplication-table" element={<LazyLoad><MultiplicationTable /></LazyLoad>} />
+        <Route path="/tools/study-timetable" element={<LazyLoad><StudyTimetable /></LazyLoad>} />
+        <Route path="/tools/venn-diagram" element={<LazyLoad><VennDiagram /></LazyLoad>} />
+        <Route path="/tools/plagiarism-checker" element={<LazyLoad><PlagiarismChecker /></LazyLoad>} />
 
         {/* --- HOUSEHOLD --- */}
-        <Route path="/tools/shopping-list" element={<AppLayout><LazyLoad><ShoppingList /></LazyLoad></AppLayout>} />
-        <Route path="/tools/bill-splitter" element={<AppLayout><LazyLoad><BillSplitter /></LazyLoad></AppLayout>} />
-        <Route path="/tools/rent-vs-buy" element={<AppLayout><LazyLoad><RentVsBuy /></LazyLoad></AppLayout>} />
-        <Route path="/tools/moving-checklist" element={<AppLayout><LazyLoad><MovingChecklist /></LazyLoad></AppLayout>} />
-        <Route path="/tools/packing-list" element={<AppLayout><LazyLoad><PackingList /></LazyLoad></AppLayout>} />
-        <Route path="/tools/utility-cost-estimator" element={<AppLayout><LazyLoad><UtilityCostEstimator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/pet-age-calculator" element={<AppLayout><LazyLoad><PetAgeCalculator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/baby-name-generator" element={<AppLayout><LazyLoad><BabyNameGenerator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/chore-chart" element={<AppLayout><LazyLoad><ChoreChart /></LazyLoad></AppLayout>} />
+        <Route path="/tools/shopping-list" element={<LazyLoad><ShoppingList /></LazyLoad>} />
+        <Route path="/tools/bill-splitter" element={<LazyLoad><BillSplitter /></LazyLoad>} />
+        <Route path="/tools/rent-vs-buy" element={<LazyLoad><RentVsBuy /></LazyLoad>} />
+        <Route path="/tools/moving-checklist" element={<LazyLoad><MovingChecklist /></LazyLoad>} />
+        <Route path="/tools/packing-list" element={<LazyLoad><PackingList /></LazyLoad>} />
+        <Route path="/tools/utility-cost-estimator" element={<LazyLoad><UtilityCostEstimator /></LazyLoad>} />
+        <Route path="/tools/pet-age-calculator" element={<LazyLoad><PetAgeCalculator /></LazyLoad>} />
+        <Route path="/tools/baby-name-generator" element={<LazyLoad><BabyNameGenerator /></LazyLoad>} />
+        <Route path="/tools/chore-chart" element={<LazyLoad><ChoreChart /></LazyLoad>} />
 
         {/* --- TRAVEL --- */}
-        <Route path="/tools/flight-duration" element={<AppLayout><LazyLoad><FlightDuration /></LazyLoad></AppLayout>} />
-        <Route path="/tools/visa-checker" element={<AppLayout><LazyLoad><VisaChecker /></LazyLoad></AppLayout>} />
-        <Route path="/tools/plug-type-checker" element={<AppLayout><LazyLoad><PlugTypeChecker /></LazyLoad></AppLayout>} />
-        <Route path="/tools/holiday-checker" element={<AppLayout><LazyLoad><HolidayChecker /></LazyLoad></AppLayout>} />
-        <Route path="/tools/city-distance" element={<AppLayout><LazyLoad><CityDistance /></LazyLoad></AppLayout>} />
-        <Route path="/tools/meeting-planner" element={<AppLayout><LazyLoad><MeetingPlanner /></LazyLoad></AppLayout>} />
+        <Route path="/tools/flight-duration" element={<LazyLoad><FlightDuration /></LazyLoad>} />
+        <Route path="/tools/visa-checker" element={<LazyLoad><VisaChecker /></LazyLoad>} />
+        <Route path="/tools/plug-type-checker" element={<LazyLoad><PlugTypeChecker /></LazyLoad>} />
+        <Route path="/tools/holiday-checker" element={<LazyLoad><HolidayChecker /></LazyLoad>} />
+        <Route path="/tools/city-distance" element={<LazyLoad><CityDistance /></LazyLoad>} />
+        <Route path="/tools/meeting-planner" element={<LazyLoad><MeetingPlanner /></LazyLoad>} />
 
         {/* --- BUSINESS --- */}
-        <Route path="/tools/freelance-rate" element={<AppLayout><LazyLoad><FreelanceRate /></LazyLoad></AppLayout>} />
-        <Route path="/tools/proposal-generator" element={<AppLayout><LazyLoad><ProposalGenerator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/time-tracker" element={<AppLayout><LazyLoad><TimeTracker /></LazyLoad></AppLayout>} />
-        <Route path="/tools/work-hours" element={<AppLayout><LazyLoad><WorkHours /></LazyLoad></AppLayout>} />
-        <Route path="/tools/break-even" element={<AppLayout><LazyLoad><BreakEven /></LazyLoad></AppLayout>} />
-        <Route path="/tools/business-name-generator" element={<AppLayout><LazyLoad><BusinessNameGenerator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/slogan-generator" element={<AppLayout><LazyLoad><SloganGenerator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/email-subject-tester" element={<AppLayout><LazyLoad><EmailSubjectTester /></LazyLoad></AppLayout>} />
-        <Route path="/tools/contract-template" element={<AppLayout><LazyLoad><ContractTemplate /></LazyLoad></AppLayout>} />
+        <Route path="/tools/freelance-rate" element={<LazyLoad><FreelanceRate /></LazyLoad>} />
+        <Route path="/tools/proposal-generator" element={<LazyLoad><ProposalGenerator /></LazyLoad>} />
+        <Route path="/tools/time-tracker" element={<LazyLoad><TimeTracker /></LazyLoad>} />
+        <Route path="/tools/work-hours" element={<LazyLoad><WorkHours /></LazyLoad>} />
+        <Route path="/tools/break-even" element={<LazyLoad><BreakEven /></LazyLoad>} />
+        <Route path="/tools/business-name-generator" element={<LazyLoad><BusinessNameGenerator /></LazyLoad>} />
+        <Route path="/tools/slogan-generator" element={<LazyLoad><SloganGenerator /></LazyLoad>} />
+        <Route path="/tools/email-subject-tester" element={<LazyLoad><EmailSubjectTester /></LazyLoad>} />
+        <Route path="/tools/contract-template" element={<LazyLoad><ContractTemplate /></LazyLoad>} />
 
         {/* --- SCIENCE --- */}
-        <Route path="/tools/ohms-law" element={<AppLayout><LazyLoad><OhmsLaw /></LazyLoad></AppLayout>} />
-        <Route path="/tools/resistor-calculator" element={<AppLayout><LazyLoad><ResistorCalculator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/truth-table" element={<AppLayout><LazyLoad><TruthTable /></LazyLoad></AppLayout>} />
-        <Route path="/tools/sig-figs" element={<AppLayout><LazyLoad><SigFigs /></LazyLoad></AppLayout>} />
-        <Route path="/tools/scientific-notation" element={<AppLayout><LazyLoad><ScientificNotation /></LazyLoad></AppLayout>} />
-        <Route path="/tools/half-life" element={<AppLayout><LazyLoad><HalfLife /></LazyLoad></AppLayout>} />
-        <Route path="/tools/ph-calculator" element={<AppLayout><LazyLoad><PhCalculator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/molar-mass" element={<AppLayout><LazyLoad><MolarMass /></LazyLoad></AppLayout>} />
-        <Route path="/tools/projectile-motion" element={<AppLayout><LazyLoad><ProjectileMotion /></LazyLoad></AppLayout>} />
-        <Route path="/tools/roman-numeral" element={<AppLayout><LazyLoad><RomanNumeral /></LazyLoad></AppLayout>} />
+        <Route path="/tools/ohms-law" element={<LazyLoad><OhmsLaw /></LazyLoad>} />
+        <Route path="/tools/resistor-calculator" element={<LazyLoad><ResistorCalculator /></LazyLoad>} />
+        <Route path="/tools/truth-table" element={<LazyLoad><TruthTable /></LazyLoad>} />
+        <Route path="/tools/sig-figs" element={<LazyLoad><SigFigs /></LazyLoad>} />
+        <Route path="/tools/scientific-notation" element={<LazyLoad><ScientificNotation /></LazyLoad>} />
+        <Route path="/tools/half-life" element={<LazyLoad><HalfLife /></LazyLoad>} />
+        <Route path="/tools/ph-calculator" element={<LazyLoad><PhCalculator /></LazyLoad>} />
+        <Route path="/tools/molar-mass" element={<LazyLoad><MolarMass /></LazyLoad>} />
+        <Route path="/tools/projectile-motion" element={<LazyLoad><ProjectileMotion /></LazyLoad>} />
+        <Route path="/tools/roman-numeral" element={<LazyLoad><RomanNumeral /></LazyLoad>} />
 
         {/* --- DATA & SPREADSHEET --- */}
-        <Route path="/tools/spreadsheet-editor" element={<AppLayout><LazyLoad><SpreadsheetEditor /></LazyLoad></AppLayout>} />
-        <Route path="/tools/chart-generator" element={<AppLayout><LazyLoad><ChartGenerator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/sql-formatter" element={<AppLayout><LazyLoad><SqlFormatter /></LazyLoad></AppLayout>} />
+        <Route path="/tools/spreadsheet-editor" element={<LazyLoad><SpreadsheetEditor /></LazyLoad>} />
+        <Route path="/tools/chart-generator" element={<LazyLoad><ChartGenerator /></LazyLoad>} />
+        <Route path="/tools/sql-formatter" element={<LazyLoad><SqlFormatter /></LazyLoad>} />
 
         {/* --- PROFESSIONAL DOCS --- */}
-        <Route path="/tools/reference-letter" element={<AppLayout><LazyLoad><ReferenceLetter /></LazyLoad></AppLayout>} />
-        <Route path="/tools/meeting-minutes" element={<AppLayout><LazyLoad><MeetingMinutes /></LazyLoad></AppLayout>} />
-        <Route path="/tools/rent-receipt" element={<AppLayout><LazyLoad><RentReceipt /></LazyLoad></AppLayout>} />
-        <Route path="/tools/salary-slip" element={<AppLayout><LazyLoad><SalarySlip /></LazyLoad></AppLayout>} />
-        <Route path="/tools/attendance-sheet" element={<AppLayout><LazyLoad><AttendanceSheet /></LazyLoad></AppLayout>} />
+        <Route path="/tools/reference-letter" element={<LazyLoad><ReferenceLetter /></LazyLoad>} />
+        <Route path="/tools/meeting-minutes" element={<LazyLoad><MeetingMinutes /></LazyLoad>} />
+        <Route path="/tools/rent-receipt" element={<LazyLoad><RentReceipt /></LazyLoad>} />
+        <Route path="/tools/salary-slip" element={<LazyLoad><SalarySlip /></LazyLoad>} />
+        <Route path="/tools/attendance-sheet" element={<LazyLoad><AttendanceSheet /></LazyLoad>} />
 
         {/* --- GEOGRAPHY --- */}
-        <Route path="/tools/lat-long-finder" element={<AppLayout><LazyLoad><LatLongFinder /></LazyLoad></AppLayout>} />
-        <Route path="/tools/gps-distance" element={<AppLayout><LazyLoad><GpsDistance /></LazyLoad></AppLayout>} />
-        <Route path="/tools/world-clock" element={<AppLayout><LazyLoad><WorldClock /></LazyLoad></AppLayout>} />
-        <Route path="/tools/sunrise-sunset" element={<AppLayout><LazyLoad><SunriseSunset /></LazyLoad></AppLayout>} />
-        <Route path="/tools/moon-phase" element={<AppLayout><LazyLoad><MoonPhase /></LazyLoad></AppLayout>} />
+        <Route path="/tools/lat-long-finder" element={<LazyLoad><LatLongFinder /></LazyLoad>} />
+        <Route path="/tools/gps-distance" element={<LazyLoad><GpsDistance /></LazyLoad>} />
+        <Route path="/tools/world-clock" element={<LazyLoad><WorldClock /></LazyLoad>} />
+        <Route path="/tools/sunrise-sunset" element={<LazyLoad><SunriseSunset /></LazyLoad>} />
+        <Route path="/tools/moon-phase" element={<LazyLoad><MoonPhase /></LazyLoad>} />
 
         {/* --- FUN & VIRAL --- */}
-        <Route path="/tools/chinese-zodiac" element={<AppLayout><LazyLoad><ChineseZodiac /></LazyLoad></AppLayout>} />
-        <Route path="/tools/numerology-calculator" element={<AppLayout><LazyLoad><NumerologyCalculator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/love-compatibility" element={<AppLayout><LazyLoad><LoveCompatibility /></LazyLoad></AppLayout>} />
-        <Route path="/tools/life-path-number" element={<AppLayout><LazyLoad><LifePathNumber /></LazyLoad></AppLayout>} />
-        <Route path="/tools/age-in-days" element={<AppLayout><LazyLoad><AgeInDays /></LazyLoad></AppLayout>} />
-        <Route path="/tools/reading-speed-test" element={<AppLayout><LazyLoad><ReadingSpeedTest /></LazyLoad></AppLayout>} />
+        <Route path="/tools/chinese-zodiac" element={<LazyLoad><ChineseZodiac /></LazyLoad>} />
+        <Route path="/tools/numerology-calculator" element={<LazyLoad><NumerologyCalculator /></LazyLoad>} />
+        <Route path="/tools/love-compatibility" element={<LazyLoad><LoveCompatibility /></LazyLoad>} />
+        <Route path="/tools/life-path-number" element={<LazyLoad><LifePathNumber /></LazyLoad>} />
+        <Route path="/tools/age-in-days" element={<LazyLoad><AgeInDays /></LazyLoad>} />
+        <Route path="/tools/reading-speed-test" element={<LazyLoad><ReadingSpeedTest /></LazyLoad>} />
 
         {/* --- PLANNING --- */}
-        <Route path="/tools/habit-tracker" element={<AppLayout><LazyLoad><HabitTracker /></LazyLoad></AppLayout>} />
-        <Route path="/tools/daily-journal" element={<AppLayout><LazyLoad><DailyJournal /></LazyLoad></AppLayout>} />
-        <Route path="/tools/weekly-planner" element={<AppLayout><LazyLoad><WeeklyPlanner /></LazyLoad></AppLayout>} />
-        <Route path="/tools/meal-planner" element={<AppLayout><LazyLoad><MealPlanner /></LazyLoad></AppLayout>} />
+        <Route path="/tools/habit-tracker" element={<LazyLoad><HabitTracker /></LazyLoad>} />
+        <Route path="/tools/daily-journal" element={<LazyLoad><DailyJournal /></LazyLoad>} />
+        <Route path="/tools/weekly-planner" element={<LazyLoad><WeeklyPlanner /></LazyLoad>} />
+        <Route path="/tools/meal-planner" element={<LazyLoad><MealPlanner /></LazyLoad>} />
 
         {/* --- HEALTH EXTRAS --- */}
-        <Route path="/tools/sleep-calculator" element={<AppLayout><LazyLoad><SleepCalculator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/caffeine-calculator" element={<AppLayout><LazyLoad><CaffeineCalculator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/retirement-calculator" element={<AppLayout><LazyLoad><RetirementCalculator /></LazyLoad></AppLayout>} />
+        <Route path="/tools/sleep-calculator" element={<LazyLoad><SleepCalculator /></LazyLoad>} />
+        <Route path="/tools/caffeine-calculator" element={<LazyLoad><CaffeineCalculator /></LazyLoad>} />
+        <Route path="/tools/retirement-calculator" element={<LazyLoad><RetirementCalculator /></LazyLoad>} />
 
         {/* --- WELLNESS --- */}
-        <Route path="/tools/ambient-sound-mixer" element={<AppLayout><LazyLoad><AmbientSoundMixer /></LazyLoad></AppLayout>} />
-        <Route path="/tools/breathing-exercise" element={<AppLayout><LazyLoad><BreathingExercise /></LazyLoad></AppLayout>} />
-        <Route path="/tools/eye-rest-timer" element={<AppLayout><LazyLoad><EyeRestTimer /></LazyLoad></AppLayout>} />
-        <Route path="/tools/affirmation-generator" element={<AppLayout><LazyLoad><AffirmationGenerator /></LazyLoad></AppLayout>} />
+        <Route path="/tools/ambient-sound-mixer" element={<LazyLoad><AmbientSoundMixer /></LazyLoad>} />
+        <Route path="/tools/breathing-exercise" element={<LazyLoad><BreathingExercise /></LazyLoad>} />
+        <Route path="/tools/eye-rest-timer" element={<LazyLoad><EyeRestTimer /></LazyLoad>} />
+        <Route path="/tools/affirmation-generator" element={<LazyLoad><AffirmationGenerator /></LazyLoad>} />
 
         {/* --- NEW DEVELOPER --- */}
-        <Route path="/tools/curl-generator" element={<AppLayout><LazyLoad><CurlGenerator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/http-status-codes" element={<AppLayout><LazyLoad><HttpStatusCodes /></LazyLoad></AppLayout>} />
-        <Route path="/tools/cron-builder" element={<AppLayout><LazyLoad><CronBuilder /></LazyLoad></AppLayout>} />
-        <Route path="/tools/css-box-shadow" element={<AppLayout><LazyLoad><CssBoxShadow /></LazyLoad></AppLayout>} />
-        <Route path="/tools/css-border-radius" element={<AppLayout><LazyLoad><CssBorderRadius /></LazyLoad></AppLayout>} />
-        <Route path="/tools/flexbox-playground" element={<AppLayout><LazyLoad><FlexboxPlayground /></LazyLoad></AppLayout>} />
-        <Route path="/tools/robots-txt-generator" element={<AppLayout><LazyLoad><RobotsTxtGenerator /></LazyLoad></AppLayout>} />
-        <Route path="/tools/image-to-pdf" element={<AppLayout><LazyLoad><ImageToPdf /></LazyLoad></AppLayout>} />
-        </Routes>
+        <Route path="/tools/curl-generator" element={<LazyLoad><CurlGenerator /></LazyLoad>} />
+        <Route path="/tools/http-status-codes" element={<LazyLoad><HttpStatusCodes /></LazyLoad>} />
+        <Route path="/tools/cron-builder" element={<LazyLoad><CronBuilder /></LazyLoad>} />
+        <Route path="/tools/css-box-shadow" element={<LazyLoad><CssBoxShadow /></LazyLoad>} />
+        <Route path="/tools/css-border-radius" element={<LazyLoad><CssBorderRadius /></LazyLoad>} />
+        <Route path="/tools/flexbox-playground" element={<LazyLoad><FlexboxPlayground /></LazyLoad>} />
+        <Route path="/tools/robots-txt-generator" element={<LazyLoad><RobotsTxtGenerator /></LazyLoad>} />
+        <Route path="/tools/image-to-pdf" element={<LazyLoad><ImageToPdf /></LazyLoad>} />
+      </Route>
+      </Routes>
       </PageTransition>
       <Toaster />
-    </TransitionProvider>
+    </>
   );
 }
